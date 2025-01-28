@@ -1,0 +1,32 @@
+.navbar {
+  /* border: 1px solid red; */
+  background-color: rgb(21, 98, 242);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 100px;
+}
+.navbar > div {
+  /* border: 1px solid blueviolet; */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+.navbar a {
+  /* border: 1px solid brown; */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+}
+
+.navbar button {
+  background-color: aliceblue;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.navbar button:hover {
+  background-color: cornsilk;
+}

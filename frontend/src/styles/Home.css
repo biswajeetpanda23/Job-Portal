@@ -1,0 +1,161 @@
+.main_container {
+  /* border: 1px solid rgb(0, 255, 64); */
+}
+.container_background_div {
+  height: 100%;
+  width: 100%;
+}
+.shape_1 {
+  border: 1px solid blue;
+  height: 300px;
+  width: 300px;
+  border-radius: 30% 40% 70% 30% / 30% 85% 15% 97%;
+  background-color: rgb(140, 0, 255);
+  opacity: 0.1;
+  margin-top: 30px;
+  margin-left: 50px;
+  animation: mymove 10s infinite;
+  display: block;
+}
+@keyframes mymove {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+.shape_2 {
+  border: 1px solid rgb(0, 149, 255);
+  height: 300px;
+  width: 300px;
+  border-radius: 30% 70% 35% 65% / 31% 24% 76% 69%;
+  background-color: rgb(0, 123, 255);
+  opacity: 0.1;
+  margin-top: 100px;
+  margin-left: 50px;
+  animation: mymove2 6s infinite linear;
+  position: absolute;
+  top: 150px;
+  left: 400px;
+}
+@keyframes mymove2 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.shape_4_container {
+  /* border: 1px solid red; */
+  height: 400px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  position: absolute;
+  top: 100px;
+  right: 90px;
+}
+.shape_3 {
+  opacity: 0.1;
+  height: 100%;
+  width: 100%;
+  animation: mymove3 8s infinite;
+}
+.shape_3:nth-child(1) {
+  border-radius: 30% 70% 76% 24% / 31% 55% 45% 69%;
+  background-color: seagreen;
+  position: relative;
+  top: 100px;
+}
+.shape_3:nth-child(2) {
+  border-radius: 30% 70% 76% 24% / 85% 9% 91% 15%;
+  background-color: blueviolet;
+}
+.shape_3:nth-child(3) {
+  border-radius: 30% 70% 46% 54% / 46% 47% 53% 54%;
+  background-color: brown;
+  position: relative;
+  right: 100px;
+  top: 200px;
+}
+.shape_3:nth-child(4) {
+  border-radius: 30% 70% 35% 65% / 31% 24% 76% 69%;
+  background-color: chartreuse;
+  position: relative;
+  top: 100px;
+  left: 50px;
+}
+@keyframes mymove3 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+.container_2 {
+  /* border: 2px solid black; */
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  height: auto;
+}
+.heading_div {
+  font-size: 25px;
+  color: rgb(3, 58, 117);
+  /* border: 3px solid rgb(0, 98, 255); */
+  margin-top: 30px;
+  display: inline-block;
+  padding: 0px 30px;
+}
+.apply_Job_btn {
+  background-color: rgb(0, 98, 255);
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 0px 20px;
+  cursor: pointer;
+}
+.apply_Job_btn:hover {
+  background-color: rgb(8, 83, 205);
+}
+.image_hire_div > img {
+  width: 40%;
+  mix-blend-mode: multiply;
+}
+.process_container {
+  /* border: 1px solid red; */
+  width: 80%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 100px;
+}
+.process_container > div {
+  /* border: 1px solid black; */
+  padding: 30px;
+  background-color: rgba(0, 153, 255, 0.088);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.process_container img {
+  border: 2px solid rgb(8, 83, 205);
+  border-radius: 50%;
+  padding: 2px;
+  width: 90px;
+}
+
+.only_3_steps {
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+}
