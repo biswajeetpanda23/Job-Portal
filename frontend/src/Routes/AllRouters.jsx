@@ -8,15 +8,16 @@ import UserJobs from "../Pages/UserJobs";
 import PrivateRote from "./PrivateRote";
 import PrivateRoutUser from "./PrivateRoutUser";
 import AppliedJobListPage from "../Pages/AppliedJobListPage";
-import BuildResume from "../Pages/BuildResume"; // Import your BuildResume component
+import BuildResume from "../Pages/BuildResume";
+import RecruiterJobApplications from "../Pages/RecruiterJobApplications";
 
 
 export default function AllRouters() {
   return (
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route
         path="/jobpost"
         element={
@@ -24,7 +25,7 @@ export default function AllRouters() {
             <PostJob />
           </PrivateRote>
         }
-      ></Route>
+      />
       <Route
         path="/jobapply"
         element={
@@ -32,7 +33,8 @@ export default function AllRouters() {
             <UserJobs />
           </PrivateRoutUser>
         }
-      ></Route>
+      />
+      
       <Route
         path="/appliedjoblist"
         element={
@@ -40,10 +42,12 @@ export default function AllRouters() {
             <AppliedJobListPage />
           </PrivateRoutUser>
         }
-      ></Route>
-            <Route path="/build-resume" element={<BuildResume />} /> {/* Add this */}
-
+      />
+      <Route path="/build-resume" element={<BuildResume />} />
+      <Route
+        path="/job/:jobId/applications"
+        element={<RecruiterJobApplications />}
+      />
     </Routes>
-    
   );
 }

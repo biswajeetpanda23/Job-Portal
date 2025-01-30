@@ -1,0 +1,90 @@
+/* src/styles/BuildResume.css */
+
+/* Error message styles */
+.form-error,
+.file-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.build-resume-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.build-resume-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.build-resume-modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.build-resume-modal-close-btn:hover {
+  color: #333;
+}
+
+.build-resume-modal h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.build-resume-modal input,
+.build-resume-modal textarea {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.build-resume-modal textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.build-resume-modal button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.build-resume-modal button:hover {
+  background-color: #0056b3;
+}
+
+.build-resume-modal button:active {
+  background-color: #00408d;
+}
+
+.build-resume-modal input[type="file"] {
+  margin: 10px 0;
+}

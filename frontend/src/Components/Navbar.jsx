@@ -12,6 +12,10 @@ export default function Navbar() {
     navigate("/jobpost");
   };
 
+  const handleHireCandidate = () => {
+    navigate("/recruiter/applications"); // Navigate to the recruiter’s job applications page
+  };
+
   const LogoutFunc = () => {
     const result = window.confirm("Are you sure you want to logout?");
     if (result) {
@@ -35,6 +39,7 @@ export default function Navbar() {
   const AppliedJobFunc = () => {
     navigate("/appliedjoblist");
   };
+
   const handleBuildResume = () => {
     navigate("/build-resume"); // Navigates to the Build Resume page
   };
@@ -42,15 +47,18 @@ export default function Navbar() {
   return (
     <div className="navbar">
       <div>
-        <Link to="/">Home</Link>
+        <Link to="/">Jobify</Link>
       </div>
 
       {isAuth && (
         <div>
           <button onClick={handleJobpage}>Job Post</button>
+          {/* Add Hire Candidate button for Recruiter */}
+          <button onClick={handleHireCandidate}>Hire Candidate</button>
           <button onClick={LogoutFunc}>Logout</button>
         </div>
       )}
+
       {isAuthUser && (
         <div>
           <button onClick={handleViewJobpage}>View Jobs</button>
@@ -59,6 +67,7 @@ export default function Navbar() {
           <button onClick={LogoutFunc}>Logout</button>
         </div>
       )}
+
       {!isAuth && !isAuthUser && (
         <div>
           <Link to="/login">Login</Link>

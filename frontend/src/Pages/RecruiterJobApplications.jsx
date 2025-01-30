@@ -18,7 +18,7 @@ const RecruiterJobApplications = () => {
     };
 
     fetchApplications();
-  }, [jobId]);
+  }, [jobId]); // re-run the effect when jobId changes
 
   return (
     <div>

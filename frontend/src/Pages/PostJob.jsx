@@ -1,7 +1,10 @@
+
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../styles/Postjob.css";
 
 export default function PostJob() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -9,16 +12,19 @@ export default function PostJob() {
   const [salary, setSalary] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [responsiblities, setResponsiblities] = useState("");
-  const [catagory, setCatagory] = useState("");
+  const [responsibilities, setResponsibilities] = useState(""); // Fixed typo
+  const [category, setCategory] = useState(""); // Fixed typo
+
+  // Edit Job States
+  const [editingJob, setEditingJob] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const GetUser = JSON.parse(localStorage.getItem("recruiter"));
-
   const token = GetUser.loginToken;
-
-  const [isModalOpen, setIsModalOpen] = useState(false); // New state to handle modal open/close
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("recruiter"));
 
+  // Fetch Jobs
   const getData = async () => {
     setLoading(true);
     await fetch(`http://localhost:5000/jobs/${user._id}`, {
@@ -31,7 +37,6 @@ export default function PostJob() {
       .then((res) => res.json())
       .then((res) => {
         setData(res);
-        console.log(res);
         setLoading(false);
       })
       .catch((err) => {
@@ -44,57 +49,44 @@ export default function PostJob() {
     getData();
   }, []);
 
-  // Function to handle opening the modal
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  // Function to handle closing the modal
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
+  // Add Job
   const JobAddFunc = async () => {
-    let obj = {
+    const jobData = {
       title,
       position,
       salary,
       description,
-      responsiblities,
+      responsibilities, // Corrected key
       location,
       company: GetUser.company,
-      catagory,
+      category, // Corrected key
     };
-    console.log(obj);
+
     try {
       await fetch(`http://localhost:5000/jobs/add`, {
         method: "POST",
-        body: JSON.stringify(obj),
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
         },
+        body: JSON.stringify(jobData),
       })
         .then((res) => res.json())
         .then((res) => {
-          if (res.success == false) {
-            alert(res.message);
-          }
-          if (res.success == true) {
+          if (res.success) {
             alert(res.message);
             setIsModalOpen(false);
             getData();
+          } else {
+            alert(res.message);
           }
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
         });
     } catch (err) {
       console.log(err);
     }
   };
 
+  // Delete Job
   const deletefunc = async (id) => {
     await fetch(`http://localhost:5000/jobs/delete/${id}`, {
       method: "DELETE",
@@ -106,68 +98,202 @@ export default function PostJob() {
       .then((res) => res.json())
       .then((res) => {
         alert(res.message);
-
         getData();
-      })
-      .catch((err) => {
-        console.log(err);
       });
   };
 
+  // Edit Job
+  const handleEditJob = async (id, updatedJob) => {
+    try {
+      await fetch(`http://localhost:5000/jobs/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(updatedJob),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success) {
+            alert(res.message);
+            setIsEditModalOpen(false);
+            getData();
+          } else {
+            alert(res.message);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Edit Job Modal Component
+  const EditJobModal = ({ job, onClose, onSave }) => {
+    const [editedTitle, setEditedTitle] = useState(job.title);
+    const [editedPosition, setEditedPosition] = useState(job.position);
+    const [editedSalary, setEditedSalary] = useState(job.salary);
+    const [editedLocation, setEditedLocation] = useState(job.location);
+    const [editedDescription, setEditedDescription] = useState(job.description);
+    const [editedResponsibilities, setEditedResponsibilities] = useState(job.responsibilities);
+    const [editedCategory, setEditedCategory] = useState(job.category);
+
+    const handleSave = () => {
+      const updatedJob = {
+        title: editedTitle,
+        position: editedPosition,
+        salary: editedSalary,
+        location: editedLocation,
+        description: editedDescription,
+        responsibilities: editedResponsibilities,
+        category: editedCategory,
+      };
+      onSave(job._id, updatedJob);
+    };
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal">
+          <button className="modal-close-btn" onClick={onClose}>
+            &times;
+          </button>
+          <h2>Edit Job</h2>
+          <div className="modal_input_box_container">
+            <select
+              value={editedCategory}
+              onChange={(e) => setEditedCategory(e.target.value)}
+            >
+              <option value="">Select Category</option>
+              <option value="Software Engineers">Software Engineers</option>
+              <option value="Product Managers">Product Managers</option>
+              <option value="Data Scientists">Data Scientists</option>
+              <option value="UI/UX Designers">UI/UX Designers</option>
+              <option value="Cybersecurity Analysts">Cybersecurity Analysts</option>
+              <option value="Cloud Engineers">Cloud Engineers</option>
+              <option value="AI/ML Engineers">AI/ML Engineers</option>
+              <option value="Marketing Managers">Marketing Managers</option>
+              <option value="Finance Analysts">Finance Analysts</option>
+              <option value="DevOps Engineers">DevOps Engineers</option>
+              <option value="Mobile App Developers">Mobile App Developers</option>
+              <option value="Blockchain Developers">Blockchain Developers</option>
+              <option value="Game Developers">Game Developers</option>
+              <option value="Embedded Systems Engineers">Embedded Systems Engineers</option>
+              <option value="System Administrators">System Administrators</option>
+              <option value="Full Stack Developers">Full Stack Developers</option>
+              <option value="Backend Developers">Backend Developers</option>
+              <option value="Frontend Developers">Frontend Developers</option>
+              <option value="QA Engineers">QA Engineers</option>
+              <option value="Technical Writers">Technical Writers</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Title"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Position"
+              value={editedPosition}
+              onChange={(e) => setEditedPosition(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Responsibilities"
+              value={editedResponsibilities}
+              onChange={(e) => setEditedResponsibilities(e.target.value)}
+            />
+            <textarea
+              placeholder="Description"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Location"
+              value={editedLocation}
+              onChange={(e) => setEditedLocation(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Salary"
+              value={editedSalary}
+              onChange={(e) => setEditedSalary(e.target.value)}
+            />
+            <button onClick={handleSave}>Save Changes</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render Jobs
   const JobData = () => {
     if (data.length > 0) {
       return (
         <div className="Jobs_Card_main_container">
-          {data &&
-            data.map((ele) => (
-              <div key={ele._id}>
-                {" "}
-                {/* Add a unique key prop for the map */}
-                <h1>{ele.title}</h1>
-                <h4>{ele.position}</h4>
-                <p className="add_job_page_description">{ele.description}</p>
-                <p>{ele.responsibilities}</p>{" "}
-                {/* Correct spelling of responsibilities */}
-                <p>{ele.salary} LPA</p>
-                <p>{ele.location}</p>
-                <button>Edit job</button>
-                <button onClick={() => deletefunc(ele._id)}>Delete job</button>
-              </div>
-            ))}
+          {data.map((ele) => (
+            <div key={ele._id}>
+              <h1>{ele.title}</h1>
+              <h4>{ele.position}</h4>
+              <p className="add_job_page_description">{ele.description}</p>
+              <p>{ele.responsibilities}</p> {/* Now correctly rendered */}
+              <p>{ele.salary} LPA</p>
+              <p>{ele.location}</p>
+              <button onClick={() => {
+                setEditingJob(ele);
+                setIsEditModalOpen(true);
+              }}>
+                Edit job
+              </button>
+              <button onClick={() => deletefunc(ele._id)}>Delete job</button>
+             
+            </div>
+          ))}
         </div>
       );
     } else {
-      return (
-        <div>
-          <h1>Jobs is not posted yet.</h1>
-        </div>
-      );
+      return <h1>No jobs posted yet.</h1>;
     }
   };
 
   return (
     <div className="JobPostPage">
-      <button onClick={handleModalOpen} className="AddJob_btn">
+      <button onClick={() => setIsModalOpen(true)} className="AddJob_btn">
         Post Jobs
       </button>
+
+      {/* Add Job Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
-            <button className="modal-close-btn" onClick={handleModalClose}>
+            <button className="modal-close-btn" onClick={() => setIsModalOpen(false)}>
               &times;
             </button>
             <h2>Add New Job</h2>
-            {/* Add a form here to enter job details */}
             <div className="modal_input_box_container">
-              <select
-                name=""
-                id=""
-                onChange={(e) => setCatagory(e.target.value)}
-              >
+              <select onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Select Category</option>
-                <option value="Software engineers">Software engineers</option>
+                <option value="Software Engineers">Software Engineers</option>
                 <option value="Product Managers">Product Managers</option>
-                <option value="Data Scientist"> Data Scientist</option>
+                <option value="Data Scientists">Data Scientists</option>
+                <option value="UI/UX Designers">UI/UX Designers</option>
+                <option value="Cybersecurity Analysts">Cybersecurity Analysts</option>
+                <option value="Cloud Engineers">Cloud Engineers</option>
+                <option value="AI/ML Engineers">AI/ML Engineers</option>
+                <option value="Marketing Managers">Marketing Managers</option>
+                <option value="Finance Analysts">Finance Analysts</option>
+                <option value="DevOps Engineers">DevOps Engineers</option>
+                <option value="Mobile App Developers">Mobile App Developers</option>
+                <option value="Blockchain Developers">Blockchain Developers</option>
+                <option value="Game Developers">Game Developers</option>
+                <option value="Embedded Systems Engineers">Embedded Systems Engineers</option>
+                <option value="System Administrators">System Administrators</option>
+                <option value="Full Stack Developers">Full Stack Developers</option>
+                <option value="Backend Developers">Backend Developers</option>
+                <option value="Frontend Developers">Frontend Developers</option>
+                <option value="QA Engineers">QA Engineers</option>
+                <option value="Technical Writers">Technical Writers</option>
               </select>
               <input
                 type="text"
@@ -182,7 +308,7 @@ export default function PostJob() {
               <input
                 type="text"
                 placeholder="Responsibilities"
-                onChange={(e) => setResponsiblities(e.target.value)}
+                onChange={(e) => setResponsibilities(e.target.value)}
               />
               <textarea
                 placeholder="Description"
@@ -198,11 +324,22 @@ export default function PostJob() {
                 placeholder="Salary"
                 onChange={(e) => setSalary(e.target.value)}
               />
-              <button onClick={JobAddFunc}>Add</button>
+              <button onClick={JobAddFunc}>Add Job</button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Edit Job Modal */}
+      {isEditModalOpen && (
+        <EditJobModal
+          job={editingJob}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={handleEditJob}
+        />
+      )}
+
+      {/* Display Jobs */}
       {JobData()}
     </div>
   );

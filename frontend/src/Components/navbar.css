@@ -30,3 +30,25 @@
 .navbar button:hover {
   background-color: cornsilk;
 }
+/* Add styling for the Hire Candidate button */
+.navbar button {
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #f1f1f1;
+}
+
+.navbar .hire-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.navbar .hire-btn:hover {
+  background-color: #218838;
+}
+
