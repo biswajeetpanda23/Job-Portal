@@ -11,4 +11,5 @@ const JobAppliedSchema = new Schema({
 
 const UserJobApplyModel = mongoose.model("usersjobapply", JobAppliedSchema);
 
+
 module.exports = { UserJobApplyModel };

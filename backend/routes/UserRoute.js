@@ -1,43 +1,40 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const validator = require("validator");
+const { UserModel } = require('../model/UserModel');
+const { RecruiterJobModel } = require('../model/RecruiterJobModel'); // Import the RecruiterJobModel
+const mongoose = require('mongoose');
 
-const { UserModel } = require('../model/UserModel')
+const UserRoute = express.Router();
 
-const UserRoute = express.Router()
-
+// Get all users
 UserRoute.get('/', async (req, res) => {
     try {
         const AllUsers = await UserModel.find();
-
         res.status(201).json({ success: true, data: AllUsers });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
-})
+});
 
+// Register user
 UserRoute.post("/register", async (req, res) => {
     const { name, email, mobile, password } = req.body;
 
-    const isValidEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+    // Email validation using validator
+    if (!validator.isEmail(email)) {
+        return res.status(500).json({
+            success: false,
+            message: "Invalid email format. Please check!",
+        });
+    }
 
     try {
         const existingUser = await UserModel.find({ email });
 
-        if (!isValidEmail(email)) {
-            return res.status(500).json({
-                success: false,
-                message: "its not a valid mail please check!",
-            });
-        }
-
         if (existingUser.length > 0) {
-            return res
-                .status(400)
-                .json({ success: false, message: "User already exists" });
+            return res.status(400).json({ success: false, message: "User already exists" });
         }
 
         bcrypt.hash(password, 10, async (err, hash) => {
@@ -53,9 +50,7 @@ UserRoute.post("/register", async (req, res) => {
                     password: hash,
                 });
 
-                return res
-                    .status(201)
-                    .json({ success: true, message: "User Register Successfully" });
+                return res.status(201).json({ success: true, message: "User registered successfully" });
             } catch (err) {
                 return res.status(500).json({ success: false, error: err.message });
             }
@@ -63,10 +58,12 @@ UserRoute.post("/register", async (req, res) => {
     } catch (err) {
         return res.status(500).json({ success: false, error: err.message });
     }
-})
+});
 
+// Login user
 UserRoute.post('/login', async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const finduser = await UserModel.find({ email });
         if (finduser.length > 0) {
@@ -74,7 +71,7 @@ UserRoute.post('/login', async (req, res) => {
                 if (result) {
                     const token = jwt.sign(
                         { UserID: finduser[0]._id },
-                        "saikhmirsat",
+                        process.env.JWT_SECRET || "saikhmirsat", // Use environment variable for JWT secret
                         { expiresIn: "1d" }
                     );
 
@@ -83,31 +80,36 @@ UserRoute.post('/login', async (req, res) => {
                         [{ $set: { loginToken: token } }, { $set: { isAuth: true } }]
                     );
 
-
-                    const user = await UserModel.find({ email });
+                    const user = await UserModel.find({ email }).select('-password'); // Exclude password from response
 
                     return res.send({
                         success: true,
-                        message: "Login Successful",
+                        message: "Login successful",
                         user
                     });
                 } else {
-                    return res.send({ success: false, message: "Wrong creadencial" });
+                    return res.send({ success: false, message: "Incorrect credentials" });
                 }
             });
         } else {
             return res.send({
                 success: false,
-                message: "This email is not register please Register first ",
+                message: "This email is not registered. Please register first.",
             });
         }
     } catch (err) {
         console.log(err);
     }
-})
+});
 
+// Logout user
 UserRoute.post('/logout/:_id', async (req, res) => {
     const id = req.params._id;
+
+    // Check if the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ success: false, message: "Invalid user ID" });
+    }
 
     try {
         const user = await UserModel.find({ _id: id });
@@ -117,20 +119,15 @@ UserRoute.post('/logout/:_id', async (req, res) => {
                 { $set: { loginToken: "" } },
                 { $set: { isAuth: false } },
             ]);
-            return res
-                .status(201)
-                .json({ success: true, message: "Logout successful" });
+            return res.status(201).json({ success: true, message: "Logout successful" });
         } else {
-            return res
-                .status(500)
-                .json({ success: false, message: "something wrong" });
+            return res.status(500).json({ success: false, message: "Something went wrong" });
         }
     } catch (err) {
         return res.status(500).json({ success: false, error: err });
     }
-})
+});
 
 module.exports = {
     UserRoute
-}
-
+};

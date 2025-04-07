@@ -63,6 +63,7 @@ RecruiterJobRoute.patch('/edit/:_id', async (req, res) => {
     }
 })
 
+
 module.exports = {
     RecruiterJobRoute
 }

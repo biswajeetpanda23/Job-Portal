@@ -6,7 +6,7 @@ const { RecruiterRoute } = require('./routes/RecruiterRoute')
 const { RecruiterJobRoute } = require('./routes/RecruiterJobRoute')
 const { JobApplyRoute } = require('./routes/JobAppliedUser.route')
 const { authenticate } = require('./middleware/Authenticate.middleware')
-
+// const jobApplicationsRoutes = require("./routes/jobApplications");
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -17,6 +17,7 @@ app.use('/recruiters', RecruiterRoute)
 app.use(authenticate)
 app.use('/jobs', RecruiterJobRoute)
 app.use('/jobsapply', JobApplyRoute)
+// app.use("/api/jobapplications", jobApplicationsRoutes);
 
 app.listen(5000, async () => {
   try {

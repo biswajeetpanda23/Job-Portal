@@ -113,6 +113,41 @@ export default function UserJobs() {
     }
   };
 
+  // Save Job Function
+  const saveJobFunc = async (jobId) => {
+    const user = JSON.parse(localStorage.getItem("candidate")); // Get the logged-in user
+  
+    try {
+      const response = await fetch("http://localhost:5000/user/saveJob", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.loginToken}`, // Ensure the Authorization token is set
+        },
+        body: JSON.stringify({
+          userId: user._id,  // Use the user ID from local storage
+          jobId: jobId,      // The job ID to be saved
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to save job");
+      }
+  
+      const result = await response.json();
+      if (result.success) {
+        alert("Job saved successfully!");
+      } else {
+        alert(result.message || "Error saving job");
+      }
+    } catch (error) {
+      console.error("Error saving job:", error);
+      alert("Error saving job: " + error.message);
+    }
+  };
+  
+  
+
   return (
     <div className="job-container">
       {/* Filter Section */}

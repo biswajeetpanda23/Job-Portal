@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./navbar.css";
 
@@ -13,10 +13,13 @@ export default function Navbar() {
   };
 
   const handleHireCandidate = () => {
-    navigate("/recruiter/applications"); // Navigate to the recruiter’s job applications page
+    navigate("/recruiter/applications");
+  };
+  const handleRecruiterDashboard = () => {
+    navigate("/recruiter/dashboard");
   };
 
-  const LogoutFunc = () => {
+  const handleLogout = () => {
     const result = window.confirm("Are you sure you want to logout?");
     if (result) {
       localStorage.removeItem("isAuth");
@@ -25,10 +28,7 @@ export default function Navbar() {
       localStorage.removeItem("candidate");
 
       navigate("/login");
-
       alert("Logout successful");
-    } else {
-      alert("Logout canceled.");
     }
   };
 
@@ -36,12 +36,14 @@ export default function Navbar() {
     navigate("/jobapply");
   };
 
-  const AppliedJobFunc = () => {
+  const handleAppliedJobs = () => {
     navigate("/appliedjoblist");
   };
 
+ 
+
   const handleBuildResume = () => {
-    navigate("/build-resume"); // Navigates to the Build Resume page
+    navigate("/build-resume");
   };
 
   return (
@@ -53,18 +55,19 @@ export default function Navbar() {
       {isAuth && (
         <div>
           <button onClick={handleJobpage}>Job Post</button>
-          {/* Add Hire Candidate button for Recruiter */}
           <button onClick={handleHireCandidate}>Hire Candidate</button>
-          <button onClick={LogoutFunc}>Logout</button>
+          <button onClick={handleRecruiterDashboard}>Dashboard</button>
+
+          <button onClick={handleLogout}>Logout</button>
         </div>
       )}
 
       {isAuthUser && (
         <div>
           <button onClick={handleViewJobpage}>View Jobs</button>
-          <button onClick={AppliedJobFunc}>Applied Jobs</button>
+          <button onClick={handleAppliedJobs}>Applied Jobs</button>
           <button onClick={handleBuildResume}>Build Resume</button>
-          <button onClick={LogoutFunc}>Logout</button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       )}
 

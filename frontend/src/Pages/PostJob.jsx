@@ -240,6 +240,8 @@ export default function PostJob() {
               <p>{ele.responsibilities}</p> {/* Now correctly rendered */}
               <p>{ele.salary} LPA</p>
               <p>{ele.location}</p>
+
+              
               <button onClick={() => {
                 setEditingJob(ele);
                 setIsEditModalOpen(true);
@@ -294,6 +296,16 @@ export default function PostJob() {
                 <option value="Frontend Developers">Frontend Developers</option>
                 <option value="QA Engineers">QA Engineers</option>
                 <option value="Technical Writers">Technical Writers</option>
+                <option value="Project Managers">Project Managers</option>
+                <option value="Business Analysts">Business Analysts</option>
+                <option value="HR Managers">HR Managers</option>
+                <option value="Recruiters">Recruiters</option>
+                <option value="Sales Managers">Sales Managers</option>
+                <option value="Customer Support">Customer Support</option>
+                <option value="Operations Managers">Operations Managers</option>
+                
+
+
               </select>
               <input
                 type="text"
