@@ -11,7 +11,7 @@ import AppliedJobListPage from "../Pages/AppliedJobListPage";
 import BuildResume from "../Pages/BuildResume";
 import RecruiterJobApplications from "../Pages/RecruiterJobApplications";
 import RecruiterApplications from "../Pages/RecruiterApplications";
-import RecruiterDashboard from "../Pages/RecruiterDashboard";
+
 
 
 export default function AllRouters() {
@@ -51,7 +51,7 @@ export default function AllRouters() {
         element={<RecruiterJobApplications />}
       />
       <Route path="/recruiter/applications" element={<RecruiterApplications />} />
-      <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
+     
 
 
       

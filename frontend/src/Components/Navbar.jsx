@@ -15,9 +15,6 @@ export default function Navbar() {
   const handleHireCandidate = () => {
     navigate("/recruiter/applications");
   };
-  const handleRecruiterDashboard = () => {
-    navigate("/recruiter/dashboard");
-  };
 
   const handleLogout = () => {
     const result = window.confirm("Are you sure you want to logout?");
@@ -56,7 +53,7 @@ export default function Navbar() {
         <div>
           <button onClick={handleJobpage}>Job Post</button>
           <button onClick={handleHireCandidate}>Hire Candidate</button>
-          <button onClick={handleRecruiterDashboard}>Dashboard</button>
+         
 
           <button onClick={handleLogout}>Logout</button>
         </div>
